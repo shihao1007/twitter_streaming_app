@@ -1,0 +1,149 @@
+body {
+    font-family: "Open Sans", sans-serif;
+    color: rgb(2, 34, 75);
+    background-color: rgb(255, 255, 255);
+}
+
+h6 {
+    margin-top: 0px;
+}
+
+.app__container {
+    margin: 1% 5%;
+}
+
+.app__header {
+    display: flex;
+    justify-content: space-between;
+    color: rgb(2, 29, 65);
+}
+
+.app__footer {
+    display: flex;
+    text-align: center;
+    color: rgb(2, 29, 65);
+}
+
+.app__header__title {
+    color: rgb(3, 18, 37) !important;
+    text-decoration: none;
+    letter-spacing: 0.23rem;
+}
+
+.app__header__title--grey {
+    color: rgb(4, 47, 85);
+}
+.app__comment {
+    color: rgb(4, 47, 85);
+    margin: 20px 0px;
+}
+
+.app__menu__img {
+    margin-top: 25px;
+    margin-right: 50px;
+    height: 65px;
+    width: auto;
+}
+
+.app__content {
+    display: flex;
+    margin-top: 10px;
+}
+
+.number_of_words {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(221, 236, 255);
+    border-radius: 0.55rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.graph__title {
+    color: rgb(3, 18, 37) !important;
+    letter-spacing: 0.3rem !important;
+    padding: 15px 0px 0px 25px;
+    margin-bottom: 0px !important;
+    font-size: 1em;
+}
+
+.slider {
+    color: rgb(3, 18, 37) !important;
+    padding: 20px;
+}
+
+.auto__checkbox {
+    margin-right: 10px;
+}
+
+.auto__label {
+    color: rgb(3, 21, 44);
+}
+
+.auto__container {
+    display: flex;
+    justify-content: space-between;
+    color: rgb(188, 207, 231);
+    padding: 0px 10px;
+}
+
+.auto__p {
+    color: rgb(3, 18, 37) !important;
+    padding: 0px 0px 0px 0px;
+    margin-left: 650px;
+    text-align: right;
+}
+
+.graph__container {
+    background-color: rgb(221, 236, 255);
+    border-radius: 0.55rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.first {
+    margin-bottom: 15px;
+}
+
+.second {
+    margin-top: 0px;
+}
+
+.bar_pie {
+    margin-left: 15px;
+}
+
+#user_group {
+    display: flex;
+    justify-content: center;
+}
+
+._dash-undo-redo {
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
+    .bar_pie {
+        margin: 15px 0px 10px 0px;
+    }
+    .app__content {
+        display: block;
+    }    
+    .app__menu__img {
+        height: 30px;
+        width: auto;
+    }
+    .app__header {
+        display: flex;
+        flex-direction: column;
+    }
+    .app__header__desc {
+        order: 1;
+        text-align: center;
+    }
+    .app__header__logo {
+        order: 0;
+    }
+    .app__header__title {
+        font-size: 1.5em;
+        padding-top: 15px;
+    }
+}

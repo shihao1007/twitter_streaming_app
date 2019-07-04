@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  streaming_app:
+    env_file:
+      - 'variables.env'
+    build:
+      context: .
+      dockerfile: streaming_app.Dockerfile
+    ports:
+      - '5050:5050'
+    volumes:
+      - './:/app'
+    network_mode: "host"
+  twitter_app:
+    build:
+      context: .
+      dockerfile: twitter_app.Dockerfile
+    volumes:
+      - './:/app'
+    ports:
+      - '80:80'
+    network_mode: "host"
