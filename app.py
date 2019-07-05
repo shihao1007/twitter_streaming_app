@@ -3,9 +3,6 @@
 """
 Created on Sun Jun 23 09:50:29 2019
 
-this script runs a Dash server and renders a webpage at http://0.0.0.0:80
-tutorial is availabel at https://shihaojran.com/live-twitter-data-analysis-and-visualization-using-python-and-plotly-dash/
-
 Author:
     Shihao Ran (shihao1007@gmail.com)
     STIM Laboratory
@@ -42,6 +39,7 @@ nltk.download('vader_lexicon')
 # global refresh interval for the application, ms
 GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 2000)
 
+# initialize a sentiment analyzer
 sid = SentimentIntensityAnalyzer()
 
 keywords_to_hear = ['#Fortnite',
@@ -158,7 +156,7 @@ app.layout = html.Div(
                                     className="auto__container",
                                 ),
                         dcc.Graph(
-                            id="number_of_words",
+                            id="number_of_tweets",
                             animate=False,
                             figure=go.Figure(
                                 layout=go.Layout(
@@ -168,7 +166,7 @@ app.layout = html.Div(
                             ),
                         ),
                     ],
-                    className="two-thirds column number_of_words",
+                    className="two-thirds column number_of_tweets",
                 ),
                 # right hand side, bar plot and pie chart
                 html.Div(
@@ -322,56 +320,43 @@ def preprocess_nltk(row):
     return ' '.join(no_stop)
 
 
-# define callback function for number_of_words line plot
+# define callback function for number_of_tweets scatter plot
 @app.callback(
-    Output('number_of_words', 'figure'),
+    Output('number_of_tweets', 'figure'),
     [Input('query_update', 'n_intervals')])
 def update_graph_scatter(n):
 
     # query tweets from the database
     df = get_tweet_data()
 
-    # get the word count
+    # get the number of tweets for each keyword
     cnt = bag_of_words(df['text'])
 
     # get the current time for x-axis
     time = datetime.datetime.now().strftime('%D, %H:%M:%S')
     X_universal.append(time)
 
-    # initialize a list of items to pop
     to_pop = []
-
-    # loop through the dictionary to filter out outdated keywords
     for keyword, cnt_queue in scatter_dict.items():
-        # if the count queue for current keyword is not empty
         if cnt_queue:
-            # pop all the outdated count values
             while cnt_queue and (cnt_queue[0][1] < X_universal[0]):
                 cnt_queue.popleft()
-        # if the queue for the keyword is empty
         else:
-            # append it to the pop list
             to_pop.append(keyword)
         
-    # pop all the outdated keywords
+
     for keyword in to_pop:
         scatter_dict.pop(keyword)
 
-    # update the top_N keywords
     top_N = cnt.most_common(num_tags_scatter)
 
-    # loop through the new top_N to update the dictionary
     for keyword, cnt in top_N:
-        # if the current keyword is newly appeared
         if keyword not in scatter_dict:
-            # initialize a new deque for it and append its count and time
             scatter_dict[keyword] = deque(maxlen=30)
             scatter_dict[keyword].append([cnt, time])
-        # if it is not a new one, just append the count and time
         else:
             scatter_dict[keyword].append([cnt, time])
 
-    # update the colors for the new dictionary
     new_colors = chart_colors[:len(scatter_dict)]
 
     # plot the scatter plot
@@ -380,8 +365,16 @@ def update_graph_scatter(n):
         y=[cnt for cnt, time in cnt_queue],
         name=keyword,
         mode='lines+markers',
-        opacity=0.7,
-        marker=dict(color=color, size=15)
+        opacity=0.5,
+        marker=dict(
+            size=10,
+            color=color,
+        ),
+        line=dict(
+            width=6,
+            # dash='dash',
+            color=color,
+        )
     ) for color, (keyword, cnt_queue) in list(zip(new_colors, scatter_dict.items()))]
 
     # specify the layout
@@ -389,8 +382,8 @@ def update_graph_scatter(n):
             xaxis={
                 'automargin': False,
                 'range': [min(X_universal), max(X_universal)],
-                'title': 'Current Time',
-                'nticks': 8
+                'title': 'Current Time (GMT)',
+                'nticks': 6
             },
             yaxis={
                 'type': 'log',
@@ -557,8 +550,8 @@ def update_graph_sentiment(interval):
             xaxis={
                 'automargin': False,
                 'range': [min(X_universal), max(X_universal)],
-                'title': 'Current Time',
-                'nticks': 3,
+                'title': 'Current Time (GMT)',
+                'nticks': 2,
             },
             yaxis={
                 'autorange': True,
