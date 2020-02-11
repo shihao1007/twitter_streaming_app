@@ -1,5 +1,5 @@
 # Twitter Streaming App
-Repository for Twitter Streaming app: http://3.18.108.53/
+Repository for Twitter Streaming app: http://3.134.76.30/
 
 To run the application locally with Docker:
 
